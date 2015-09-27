@@ -1,19 +1,22 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.core.context_processors import csrf
 
 from models import KeyProfile
 from models import KeySolves
+from forms import LoginForm
 
-@api_view(['GET', 'POST'])
 def login(request):
+	context = {}
+	context.update(csrf(request))
 	if request.method == "POST":
 		user = authenticate(username=request.REQUEST.get('username'), password=request.REQUEST.get('password'))
 		# handle error cases, inactive users, ...
 		login(request, user)
-
+		print "we logged the person in I think"
 	elif request.method == "GET":
-		context = {}
+		context['form'] = LoginForm()
 		return render(request, 'login.html', context)
 
 def home(request):
@@ -22,7 +25,6 @@ def home(request):
 	context = {'keyProfiles': keyProfiles, 'keySolves': keySolves}
 	return render(request, 'home.html', context)
 
-@api_view(['POST'])
 def submitKey(request, keyId):
 	keySolved = KeySolves.objects.get(user = request.user, id = keyId)
 	if keySolved:

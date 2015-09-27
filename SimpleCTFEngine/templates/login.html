@@ -2,6 +2,11 @@
 	<body>
 		<a href="/home">home</a> <a href="/overview">overview</a> <a href="/login">login</a>
 		<hr>
-		Simple CTF Engine login page
+		Simple CTF Engine login page<br>
+		<form action="/login/" method="post">
+			{% csrf_token %}
+			{{form}}
+			<input type="submit" value="Login">
+		</form>
 	</body>
 </home>
