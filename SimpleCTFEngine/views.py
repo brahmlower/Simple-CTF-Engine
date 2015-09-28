@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate
-from django.contrib.auth import login
+from django.contrib.auth import login as auth_login
 from django.core.context_processors import csrf
 
 from models import KeyProfile
@@ -10,18 +11,23 @@ from forms import LoginForm
 def login(request):
 	context = {}
 	context.update(csrf(request))
+	context['form'] = LoginForm()
 	if request.method == "POST":
-		user = authenticate(username=request.REQUEST.get('username'), password=request.REQUEST.get('password'))
-		# handle error cases, inactive users, ...
-		login(request, user)
-		print "we logged the person in I think"
+		user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+		if user is not None:
+			login(request, user)
+			if user is not None:
+				auth_login(request, user)
+				print "we logged the person in I think"
+				return redirect('/home')
 	elif request.method == "GET":
-		context['form'] = LoginForm()
 		return render(request, 'login.html', context)
 
 def home(request):
+	if not request.user.is_authenticated():
+		return redirect('/login')
 	keyProfiles = KeyProfile.objects.all()
-	keySolves = KeySolves.objects.filter(user = user)
+	keySolves = KeySolves.objects.filter(user = request.user)
 	context = {'keyProfiles': keyProfiles, 'keySolves': keySolves}
 	return render(request, 'home.html', context)
 

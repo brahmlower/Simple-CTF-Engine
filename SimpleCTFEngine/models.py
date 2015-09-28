@@ -15,4 +15,4 @@ class KeySolves(Model):
 	id = AutoField(primary_key = True)
 	keyId = ForeignKey(KeyProfile)
 	userId = ForeignKey(User)
-	datetime = DateTimeField(default = timezone.now())
+	datetime = DateTimeField(default = timezone.now)
