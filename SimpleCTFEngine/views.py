@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.core.context_processors import csrf
 
 from models import KeyProfile
@@ -13,26 +14,35 @@ def login(request):
 	context.update(csrf(request))
 	context['form'] = LoginForm()
 	if request.method == "POST":
-		user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(username = username, password = password)
 		if user is not None:
-			login(request, user)
 			if user is not None:
 				auth_login(request, user)
 				print "we logged the person in I think"
 				return redirect('/home')
-	elif request.method == "GET":
-		return render(request, 'login.html', context)
+			else:
+				context['message'] = 'Account locked or disabled.'
+		else:
+			context['message'] = 'Incorrect username or password.'
+	return render(request, 'login.html', context)
+
+def logout(request):
+	auth_logout(request)
+	return redirect('/overview')
 
 def home(request):
 	if not request.user.is_authenticated():
 		return redirect('/login')
-	keyProfiles = KeyProfile.objects.all()
-	keySolves = KeySolves.objects.filter(user = request.user)
-	context = {'keyProfiles': keyProfiles, 'keySolves': keySolves}
+	context = {}
+	context['user'] = request.user 
+	context['keyProfiles'] = KeyProfile.objects.all()
+	context['keySolves'] = KeySolves.objects.filter(userId = request.user)
 	return render(request, 'home.html', context)
 
 def submitKey(request, keyId):
-	keySolved = KeySolves.objects.get(user = request.user, id = keyId)
+	keySolved = KeySolves.objects.get(userId = request.user, keyId = keyId)
 	if keySolved:
 		# Person has already solved this key
 		return render(request, 'home.html')

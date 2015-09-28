@@ -1,13 +1,19 @@
 <html>
 	<body>
-		<a href="/home">home</a> <a href="/overview">overview</a> <a href="/login">login</a>
+		<a href="/overview">overview</a>
+		{%if user.is_authenticated %}
+		<a href="/home">home</a> <a href="/logout">logout</a>
+		{%else%}
+		<a href="/login">login</a>
+		{%endif%}
 		<hr>
-		Simple CTF Engine login page<br>
+		Log in using your UAF CSC credentials.
 		<form action="/login/" method="post">
 			{% csrf_token %}
-			{{form}}
-			<input type="submit" value="Login">
-			{{message}}
+			<label for="{{ form.username.id_for_label }}" class="col-lg-3 control-label">{{ form.username.label }}</label>{{ form.username }}
+			<br><label for="{{ form.password.id_for_label }}" class="col-lg-3 control-label">{{ form.password.label }}</label>{{ form.password }}
+			<br><input type="submit" value="Login">
 		</form>
+		{{message}}
 	</body>
 </home>

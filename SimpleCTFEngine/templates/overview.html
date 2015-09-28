@@ -1,6 +1,11 @@
 <html>
 	<body>
-		<a href="/home">home</a> <a href="/overview">overview</a> <a href="/login">login</a>
+		<a href="/overview">overview</a>
+		{%if user.is_authenticated %}
+		<a href="/home">home</a> <a href="/logout">logout</a>
+		{%else%}
+		<a href="/login">login</a>
+		{%endif%}
 		<hr>
 		Simple CTF Engine overview page
 	</body>

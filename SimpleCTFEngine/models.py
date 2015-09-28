@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 class KeyProfile(Model):
 	id = AutoField(primary_key = True)
 	key = CharField(max_length = 128)
+	name = CharField(max_length = 20)
 	description = CharField(max_length = 400)
 
 class KeySolves(Model):

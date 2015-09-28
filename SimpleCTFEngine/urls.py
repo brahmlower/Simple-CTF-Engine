@@ -6,6 +6,7 @@ import views
 urlpatterns = [
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^login/', views.login),
+	url(r'^logout/', views.logout),
 	url(r'^home/', views.home),
 	url(r'^submit-key/(?P<keyId>[0-9]+)/', views.submitKey),
 	url(r'^overview/', views.overview),
