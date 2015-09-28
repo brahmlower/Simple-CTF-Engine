@@ -10,8 +10,8 @@
 		Log in using your UAF CSC credentials.
 		<form action="/login/" method="post">
 			{% csrf_token %}
-			<label for="{{ form.username.id_for_label }}" class="col-lg-3 control-label">{{ form.username.label }}</label>{{ form.username }}
-			<br><label for="{{ form.password.id_for_label }}" class="col-lg-3 control-label">{{ form.password.label }}</label>{{ form.password }}
+			<label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>{{ form.username }}
+			<br><label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>{{ form.password }}
 			<br><input type="submit" value="Login">
 		</form>
 		{{message}}

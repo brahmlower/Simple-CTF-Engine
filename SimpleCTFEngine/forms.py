@@ -6,3 +6,6 @@ from django.forms.widgets import PasswordInput
 class LoginForm(Form):
 	username = CharField(label = "Username", widget = TextInput())
 	password = CharField(label = 'Password', widget = PasswordInput())
+
+class KeySubmitForm(Form):
+	key = CharField(label = "Key", widget = TextInput())

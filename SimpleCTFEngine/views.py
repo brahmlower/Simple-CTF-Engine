@@ -8,6 +8,7 @@ from django.core.context_processors import csrf
 from models import KeyProfile
 from models import KeySolves
 from forms import LoginForm
+from forms import KeySubmitForm
 
 def login(request):
 	context = {}
@@ -37,28 +38,33 @@ def home(request):
 		return redirect('/login')
 	context = {}
 	context['user'] = request.user 
+	context['form'] = KeySubmitForm()
 	context['keyProfiles'] = KeyProfile.objects.all()
 	context['keySolves'] = KeySolves.objects.filter(userId = request.user)
 	return render(request, 'home.html', context)
 
 def submitKey(request, keyId):
-	keySolved = KeySolves.objects.get(userId = request.user, keyId = keyId)
-	if keySolved:
+	if not request.user.is_authenticated():
+		return redirect('/overview')
+	if request.method != 'POST':
+		return redirect('/home')
+
+	try:
+		keySolved = KeySolves.objects.get(userId = request.user, keyId = keyId)
 		# Person has already solved this key
-		return render(request, 'home.html')
+		return redirect('/home')
+	except KeySolves.DoesNotExist:
+		pass
+		
 	# Is the key correct?
 	keyProfile = KeyProfile.objects.get(id = keyId)
 	if request.POST['key'] == keyProfile.key:
 		# Key is correct
-		context = {"message": "Congradulations, you got the key!"}
-		keySolved(keyId = keyProfile, userId = request.user).save()
-	else:
-		# Key is incorrect
-		context = {"message": "I'm sorry, that key is incorrect."}
-	latest_question_list = Question.objects.order_by('-pub_date')[:5]
-	context = {'message': latest_question_list}
-	return render(request, 'submitKey.html', context)
+		print 'correct key!'
+		KeySolves(keyId = keyProfile, userId = request.user).save()
+	return redirect('/home')
 
 def overview(request):
 	context = {}
+	context['keySolves'] = KeySolves.objects.all()
 	return render(request, 'overview.html', context)

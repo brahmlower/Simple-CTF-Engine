@@ -1,4 +1,12 @@
 <html>
+	<head>
+	<script>
+	function toggleDisable (targetField) {
+		targetField.prop('disabled', function(idx, oldProp) { return !oldProp; });
+		targetField.val('');
+	}
+	</script>
+	</head>
 	<body>
 		<a href="/overview">overview</a>
 		{%if user.is_authenticated %}
@@ -7,9 +15,16 @@
 		<a href="/login">login</a>
 		{%endif%}
 		<hr>
-		Simple CTF Engine home page<br>
+		Key Challenges:
 		{%for i in keyProfiles%}
-		<li><a href="/submitKey/{{i.id}}">{{i.Name}}</a></li>
+		<div>
+			{{i.name}}
+			<form action="/submit-key/{{i.id}}/" method="post">
+				{% csrf_token %}
+				<label for="{{ form.key.id_for_label }}">{{ form.key.label }}</label>{{ form.key }}
+				<input type="submit" value="Submit">
+			</form>
+		</div>
 		{%endfor%}
 	</body>
 </home>

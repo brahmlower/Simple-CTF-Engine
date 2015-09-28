@@ -8,5 +8,8 @@
 		{%endif%}
 		<hr>
 		Simple CTF Engine overview page
+		{%for i in keySolves%}
+		<li>{{i.userId.first_name}} {{i.userId.last_name}} - {{i.keyId.name}}</li>
+		{%endfor%}
 	</body>
-</home>
+</html>
