@@ -1,0 +1,53 @@
+<html>
+	<head>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap-dashboard.css" %}">
+		<script src="{% static "js/jquery-1.10.2.min.js" %}"></script>
+		<script src="{% static "js/bootstrap.min.js" %}"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				window.onload = function() {
+					$("#{{ form.username.id_for_label }}").focus();
+				};  
+			}); 
+		</script>
+		{% block script %}{% endblock %}
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+					<div class="navbar-header">
+						<a href="/" class="navbar-brand">CSC Simple CTF Engine</a>
+						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<!--- Start sidebar -->
+					<div class="col-sm-3 col-md-2 sidebar">
+						<ul class="nav nav-sidebar">
+							{% if user.is_authenticated %}
+								<li id="sidebar_logout"><a href="/logout/">Logout</a></li>
+							{% else %}
+								<li id="sidebar_login"><a href="/login/">Login</a></li>
+							{% endif %}
+							<li class="nav-divider"><li>
+							<li id="sidebar_overview"><a href="/overview/">Overview</a></li>
+							{% if user.is_authenticated %}
+								<li id="sidebar_keyentry"><a href="/home/">Key Entry</a></li>
+							{% endif %}
+						</ul>
+					</div>
+					<!-- End admin navigation sidebar -->
+					{% block page_content %}{% endblock %}
+				</div>
+			</div>
+		</div>	
+	</body>
+</home>

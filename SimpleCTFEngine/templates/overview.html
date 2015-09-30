@@ -1,15 +1,10 @@
-<html>
-	<body>
-		<a href="/overview">overview</a>
-		{%if user.is_authenticated %}
-		<a href="/home">home</a> <a href="/logout">logout</a>
-		{%else%}
-		<a href="/login">login</a>
-		{%endif%}
-		<hr>
-		Simple CTF Engine overview page
-		{%for i in keySolves%}
-		<li>{{i.userId.first_name}} {{i.userId.last_name}} - {{i.keyId.name}}</li>
-		{%endfor%}
-	</body>
-</html>
+{% extends "template.html" %}
+
+{% block page_content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
+	<h2>Simple CTF Engine overview page</h2>
+	{%for i in keySolves%}
+	<li>{{i.userId.first_name}} {{i.userId.last_name}} - {{i.keyId.name}}</li>
+	{%endfor%}
+</div>
+{% endblock %}

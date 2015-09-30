@@ -1,19 +1,22 @@
-<html>
-	<body>
-		<a href="/overview">overview</a>
-		{%if user.is_authenticated %}
-		<a href="/home">home</a> <a href="/logout">logout</a>
-		{%else%}
-		<a href="/login">login</a>
-		{%endif%}
-		<hr>
-		Log in using your UAF CSC credentials.
-		<form action="/login/" method="post">
-			{% csrf_token %}
-			<label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>{{ form.username }}
-			<br><label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>{{ form.password }}
-			<br><input type="submit" value="Login">
-		</form>
-		{{message}}
-	</body>
-</home>
+{% extends "template.html" %}
+
+{% block page_content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
+	<div class="page-header">
+		<h2>Log In</h2>
+		<p>Log in using your UAF CSC credentials.</[>
+	</div>
+	<form action="/login/" method="post" class="form-horizontal">
+		{% csrf_token %}
+		<label for="{{ form.username.id_for_label }}" class="col-lg-3 control-label">{{ form.username.label }}</label>
+		<div class="col-lg-9">{{ form.username }}<br><br></div>
+		<label for="{{ form.password.id_for_label }}" class="col-lg-3 control-label">{{ form.password.label }}</label>
+		<div class="col-lg-9">{{ form.password }}<br><br></div>
+
+		<div class="col-lg-10 col-lg-offset-3">
+			<button type="submit" class="btn btn-primary">Login</button>
+		</div>
+	</form>
+	{{message}}
+</div>
+{% endblock %}
