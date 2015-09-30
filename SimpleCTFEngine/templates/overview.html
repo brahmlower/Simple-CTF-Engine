@@ -3,8 +3,18 @@
 {% block page_content %}
 <div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
 	<h2>Simple CTF Engine overview page</h2>
-	{%for i in keySolves%}
-	<li>{{i.userId.first_name}} {{i.userId.last_name}} - {{i.keyId.name}}</li>
-	{%endfor%}
+	<ul class="list-group">
+	{% for i in keySolves %}
+		<li class="list-group-item">
+			<table width=100%>
+				<tr>
+					<td><b>{{ i.datetime }}</b></td>
+					<td><i>{{ i.userId.first_name}} {{i.userId.last_name}}</i></td>
+					<td>{{ i.keyId.name }}</td>
+				</tr>
+			</table>
+		</li>
+	{% endfor %}
+	</ul>
 </div>
 {% endblock %}
