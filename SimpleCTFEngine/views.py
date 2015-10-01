@@ -21,7 +21,6 @@ def login(request):
 		if user is not None:
 			if user is not None:
 				auth_login(request, user)
-				print "we logged the person in I think"
 				return redirect('/home')
 			else:
 				context['message'] = 'Account locked or disabled.'
@@ -37,10 +36,21 @@ def home(request):
 	if not request.user.is_authenticated():
 		return redirect('/login')
 	context = {}
-	context['user'] = request.user 
+	context['user'] = request.user
 	context['form'] = KeySubmitForm()
-	context['keyProfiles'] = KeyProfile.objects.all()
-	context['keySolves'] = KeySolves.objects.filter(userId = request.user)
+	keyProfileObjects = KeyProfile.objects.all()
+	context['key'] = []
+	for i in keyProfileObjects:
+		tmpDict = {}
+		tmpDict['id'] = i.id
+		tmpDict['name'] = i.name
+		tmpDict['description'] = i.description
+		try:
+			KeySolves.objects.get(userId = request.user, keyId = i.id)
+			tmpDict['solved'] = True
+		except KeySolves.DoesNotExist:
+			tmpDict['solved'] = False
+		context['key'].append(tmpDict)
 	return render(request, 'home.html', context)
 
 def submitKey(request, keyId):
@@ -60,7 +70,6 @@ def submitKey(request, keyId):
 	keyProfile = KeyProfile.objects.get(id = keyId)
 	if request.POST['key'] == keyProfile.key:
 		# Key is correct
-		print 'correct key!'
 		KeySolves(keyId = keyProfile, userId = request.user).save()
 	return redirect('/home')
 

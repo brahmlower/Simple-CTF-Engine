@@ -2,8 +2,8 @@
 
 {% block script %}
 	<script>
-	function toggleActive (targetField) {
-		targetField.prop('active', function(idx, oldProp) { return !oldProp; });
+	function toggleDisable (targetField) {
+		targetField.prop('disabled', function(idx, oldProp) { return !oldProp; });
 		targetField.val('');
 	}
 	</script>
@@ -12,23 +12,29 @@
 {% block page_content %}
 <div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
 	<h2>Key Challenges</h2>
-		<div class="list-group">
-		{%for i in keyProfiles%}
-			<a href="#" class="list-group-item" id="{{i.name}}">
-				<h4 class="list-group-item-heading">{{ i.name }}</h4>
-				<p class="list-group-item-text">{{ i.description }}</p>
-				<br>
-				<form action="/submit-key/{{i.id}}/" method="post">
-					{% csrf_token %}
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Key-XXXXXXXXXXXXXXXX" name={{form.key.html_name}}>
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="submit">Submit</button>
-						</span>
-					</div>
-				</form>
-			</a>
-		{%endfor%}
+	<div class="list-group">
+	{% for i in key %}
+		{% if i.solved %}
+		<a href="#" class="list-group-item list-group-item-success">
+		{% else %}
+		<a href="#" class="list-group-item">
+		{% endif %}
+			<h4 class="list-group-item-heading">{{ i.name }}</h4>
+			<p class="list-group-item-text">{{ i.description }}</p>
+			{% if not i.solved %}
+			<br>
+			<form action="/submit-key/{{ i.id }}/" method="post">
+				{% csrf_token %}
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Key-XXXXXXXXXXXXXXXX" name={{form.key.html_name}}>
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="submit">Submit</button>
+					</span>
+				</div>
+			</form>
+			{% endif %}
+		</a>
+	{% endfor %}
 	</div>
 </div>
 {% endblock %}

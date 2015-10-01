@@ -4,16 +4,21 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
 	<h2>Simple CTF Engine overview page</h2>
 	<ul class="list-group">
+	<li class="list-group-item">
+		<table width=100%><tr>
+			<td width=40%>Datetime</td>
+			<td width=30%>Name</td>
+			<td width=30%>Key Name</td>
+		</tr></table>
+	</li>
 	{% for i in keySolves %}
-		<li class="list-group-item">
-			<table width=100%>
-				<tr>
-					<td><b>{{ i.datetime }}</b></td>
-					<td><i>{{ i.userId.first_name}} {{i.userId.last_name}}</i></td>
-					<td>{{ i.keyId.name }}</td>
-				</tr>
-			</table>
-		</li>
+	<li class="list-group-item">
+		<table width=100%><tr>
+			<td width=40%><b>{{ i.datetime }}</b></td>
+			<td width=30%><i>{{ i.userId.first_name}} {{i.userId.last_name}}</i></td>
+			<td width=30%>{{ i.keyId.name }}</td>
+		</tr></table>
+	</li>
 	{% endfor %}
 	</ul>
 </div>
