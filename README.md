@@ -8,7 +8,7 @@ sudo apt-get upgrade
 sudo apt-get install build-essential libldap2-dev libsasl2-dev python-dev python-pip
 git clone https://github.com/bplower/Simple-CTF-Engine.git
 cd Simple-CTF-Engine
-sudo pip install -r requirements.txt```
+sudo pip install -r requirements.txt
 ```
 
 ### secretConfigs.py
