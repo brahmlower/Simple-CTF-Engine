@@ -15,9 +15,9 @@
 	<div class="list-group">
 	{% for i in key %}
 		{% if i.solved %}
-		<a href="#" class="list-group-item list-group-item-success">
+		<a class="list-group-item list-group-item-success">
 		{% else %}
-		<a href="#" class="list-group-item">
+		<a class="list-group-item">
 		{% endif %}
 			<h4 class="list-group-item-heading">{{ i.name }}</h4>
 			<p class="list-group-item-text">{{ i.description }}</p>
