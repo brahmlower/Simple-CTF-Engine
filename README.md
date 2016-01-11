@@ -1,6 +1,10 @@
 # Simple-CTF-Engine
 This is a simple CTF engine for the UAF CSC lectures
 
+<img src="http://i.imgur.com/DlNOop3.png" alt="Main page/score board" width="32%">
+<img src="http://i.imgur.com/xoxiAnV.png" alt="Key creation page" width="32%">
+<img src="http://i.imgur.com/S2TwiMp.png" alt="Key submission page" width="32%">
+
 ## Ubuntu Install
 ```
 sudo apt-get update
