@@ -37,6 +37,11 @@
 							{% else %}
 								<li id="sidebar_login"><a href="/login/">Login</a></li>
 							{% endif %}
+							{% if user.is_authenticated and user.is_superuser %}
+								<li class="nav-divider"><li>
+								<li id="sidebar_logout"><a href="/settings/">Settings</a></li>
+								<li id="sidebar_logout"><a href="/manage-keys/">Key Management</a></li>
+							{% endif %}
 							<li class="nav-divider"><li>
 							<li id="sidebar_overview"><a href="/overview/">Overview</a></li>
 							{% if user.is_authenticated %}

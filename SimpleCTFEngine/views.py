@@ -8,7 +8,9 @@ from django.core.context_processors import csrf
 from models import KeyProfile
 from models import KeySolves
 from forms import LoginForm
+from forms import SettingsForm
 from forms import KeySubmitForm
+from forms import KeyCreateForm
 
 def login(request):
 	context = {}
@@ -53,7 +55,7 @@ def home(request):
 		context['key'].append(tmpDict)
 	return render(request, 'home.html', context)
 
-def submitKey(request, keyId):
+def submitkey(request, keyId):
 	if not request.user.is_authenticated():
 		return redirect('/overview')
 	if request.method != 'POST':
@@ -77,3 +79,25 @@ def overview(request):
 	context = {}
 	context['keySolves'] = KeySolves.objects.all()
 	return render(request, 'overview.html', context)
+
+def managekeys(request):
+	if not request.user.is_authenticated():
+		return redirect('/overview')
+	context = {}
+	context.update(csrf(request))
+	context['form'] = KeyCreateForm()
+	context['keys'] = KeyProfile.objects.all()
+	if request.method == 'POST':
+		# Clean the input
+		keycreate = KeyCreateForm(request.POST)
+		if keycreate.is_valid():
+			keycreate.save()
+		else:
+			context['form'] = KeyCreateForm(initial = keycreate)
+	return render(request, 'keymanagement.html', context)
+
+def settings(request):
+	context = {}
+	context.update(csrf(request))
+	context['form'] = SettingsForm()
+	return render(request, 'settings.html', context)

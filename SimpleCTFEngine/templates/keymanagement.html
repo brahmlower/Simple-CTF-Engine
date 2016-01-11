@@ -1,0 +1,48 @@
+{% extends "template.html" %}
+
+{% block page_content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-6 col-md-offset-3 main">
+	<h2>Simple CTF Engine key creation page</h2>
+	<form action="/manage-keys/" method="post">
+		{% csrf_token %}
+		<label for="{{ form.name.id_for_label }}"> {{ form.name.label }} </label>
+		{{ form.name }}<br>
+
+		<label for="{{ form.key.id_for_label }}"> {{ form.key.label }} </label>
+		{{ form.key }}<br>
+
+		<label for="{{ form.description.id_for_label }}"> {{ form.description.label }} </label>
+		{{ form.description }}<br>
+
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="submit">Submit</button>
+		</span>
+	</form>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Key</th>
+				<th>Description</th>
+				<th><div class="pull-right">Actions</div></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key in keys %}
+			<tr>
+				<td>{{ key.name }}</td>
+				<td>{{ key.key }}</td>
+				<td>{{ key.description }}</td>
+				<td>
+					<div class="pull-right">
+						<a href="/manage-keys/edit/{{ key.id }}/" class="btn-sm btn-primary">Edit</a>
+						<a href="/manage-keys/delete/{{ key.id }}/" class="btn-sm btn-danger">Delete</a>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

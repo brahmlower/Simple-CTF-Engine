@@ -6,16 +6,16 @@
 	<ul class="list-group">
 	<li class="list-group-item">
 		<table width=100%><tr>
-			<td width=40%>Datetime</td>
-			<td width=30%>Name</td>
-			<td width=30%>Key Name</td>
+			<th width=40%>Datetime</th>
+			<th width=30%>Name</th>
+			<th width=30%>Key Name</th>
 		</tr></table>
 	</li>
 	{% for i in keySolves %}
 	<li class="list-group-item">
 		<table width=100%><tr>
-			<td width=40%><b>{{ i.datetime }}</b></td>
-			<td width=30%><i>{{ i.userId.first_name}} {{i.userId.last_name}}</i></td>
+			<td width=40%>{{ i.datetime }}</td>
+			<td width=30%>{{ i.userId.first_name}} {{i.userId.last_name}}</td>
 			<td width=30%>{{ i.keyId.name }}</td>
 		</tr></table>
 	</li>
