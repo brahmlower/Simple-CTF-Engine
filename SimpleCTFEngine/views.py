@@ -12,6 +12,7 @@ from forms import SettingsForm
 from forms import KeySubmitForm
 from forms import KeyCreateForm
 
+# Public views
 def login(request):
 	context = {}
 	context.update(csrf(request))
@@ -34,6 +35,12 @@ def logout(request):
 	auth_logout(request)
 	return redirect('/overview')
 
+def overview(request):
+	context = {}
+	context['keySolves'] = KeySolves.objects.all()
+	return render(request, 'overview.html', context)
+
+# Authenticated views
 def home(request):
 	if not request.user.is_authenticated():
 		return redirect('/login')
@@ -75,11 +82,7 @@ def submitkey(request, keyId):
 		KeySolves(keyId = keyProfile, userId = request.user).save()
 	return redirect('/home')
 
-def overview(request):
-	context = {}
-	context['keySolves'] = KeySolves.objects.all()
-	return render(request, 'overview.html', context)
-
+# Administrator views
 def managekeys(request):
 	if not request.user.is_authenticated():
 		return redirect('/overview')
@@ -96,7 +99,19 @@ def managekeys(request):
 			context['form'] = KeyCreateForm(initial = keycreate)
 	return render(request, 'keymanagement.html', context)
 
+def deletekey(request, keyId):
+	if not request.user.is_authenticated():
+		return redirect('/overview')
+	keyprofile = KeyProfile.objects.get(id = keyId)
+	keyprofile.delete()
+	keysolves = KeySolves.objects.filter(keyId = keyId)
+	for i in keysolves:
+		i.delete()
+	return redirect('/manage-keys')
+
 def settings(request):
+	if not request.user.is_authenticated():
+		return redirect('/overview')
 	context = {}
 	context.update(csrf(request))
 	context['form'] = SettingsForm()

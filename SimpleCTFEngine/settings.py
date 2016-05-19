@@ -37,17 +37,18 @@ ALLOWED_HOSTS = []
 # http://www.spannerbracket.com/wordpress/?p=40
 
 # Binding and connection options
-AUTH_LDAP_SERVER_URI = secretConfigs.AUTH_LDAP_SERVER_URI #"ldap://csc.uaf.edu:389"
-AUTH_LDAP_BIND_DN = secretConfigs.AUTH_LDAP_BIND_DN #"CN=Bind_User,OU=Users,DC=domain,DC=example"
-AUTH_LDAP_BIND_PASSWORD = secretConfigs.AUTH_LDAP_BIND_PASSWORD#"password"
+#AUTH_LDAP_START_TLS = True # If you've enabled TLS on your active directory server, uncomment this line
+AUTH_LDAP_SERVER_URI = secretConfigs.AUTH_LDAP_SERVER_URI
+AUTH_LDAP_BIND_DN = secretConfigs.AUTH_LDAP_BIND_DN
+AUTH_LDAP_BIND_PASSWORD = secretConfigs.AUTH_LDAP_BIND_PASSWORD
 AUTH_LDAP_CONNECTION_OPTIONS = {
 	ldap.OPT_DEBUG_LEVEL: 1,
 	ldap.OPT_REFERRALS: 0,
 }
 
 # User and group search objects and types
-AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=Users,ou=CSC,dc=csc,dc=uaf,dc=edu", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=Groups,ou=CSC,dc=csc,dc=uaf,dc=edu", ldap.SCOPE_SUBTREE, "(objectClass=group)")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(secretConfigs.LDAP_USER_SEARCH_BASE, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(secretConfigs.LDAP_GROUP_SEARCH_BASE, ldap.SCOPE_SUBTREE, "(objectClass=group)")
 AUTH_LDAP_GROUP_TYPE = NestedActiveDirectoryGroupType()
 
 # Cache settings
@@ -60,10 +61,10 @@ AUTH_LDAP_USER_ATTR_MAP = {
 	"last_name": "sn",
 	"email": "mail"
 }
-AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-	"is_staff": ["CN=ESXI Administrators,OU=Groups,OU=CSC,DC=csc,DC=uaf,DC=edu"]
-}
-AUTH_LDAP_FIND_GROUP_PERMS = True
+# AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+# 	"is_staff": ["CN=ESXI Administrators,OU=Groups,OU=CSC,DC=csc,DC=uaf,DC=edu"]
+# }
+# AUTH_LDAP_FIND_GROUP_PERMS = True
 
 # The backends needed to make this work.
 AUTHENTICATION_BACKENDS = (

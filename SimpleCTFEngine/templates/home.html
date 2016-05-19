@@ -26,7 +26,7 @@
 			<form action="/submit-key/{{ i.id }}/" method="post">
 				{% csrf_token %}
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Key-XXXXXXXXXXXXXXXX" name={{form.key.html_name}}>
+					<input type="text" class="form-control" name={{form.key.html_name}}>
 					<span class="input-group-btn">
 						<button class="btn btn-default" type="submit">Submit</button>
 					</span>

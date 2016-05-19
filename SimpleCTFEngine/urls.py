@@ -10,6 +10,7 @@ urlpatterns = [
 	url(r'^home/$', views.home),
 	url(r'^settings/$', views.settings),
 	url(r'^manage-keys/$', views.managekeys),
+	url(r'^manage-keys/delete/(?P<keyId>[0-9]+)/$', views.deletekey),
 	url(r'^submit-key/(?P<keyId>[0-9]+)/$', views.submitkey),
 	url(r'^overview/$', views.overview),
 	url(r'^$', RedirectView.as_view(url='overview/', permanent=False), name='index')
